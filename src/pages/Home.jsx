@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Users } from "lucide-react";
+import { LogOut, Users } from "lucide-react";
+
 import CreateTaskForm from "../components/CreateTaskForm";
 import GroupDashboard from "../components/GroupDashboard";
 import GroupCreation from "../components/GroupCreation";
@@ -30,8 +31,9 @@ const Home = () => {
         <nav className="flex flex-wrap gap-2 sm:gap-4">
           <a
             href="/"
-            className=" cursor-pointer font-bold text-gray-200 px-3 py-2 rounded-lg hover:text-white hover:shadow-[0_0_5px_#7c3aed,0_0_10px_#7c3aed] transition-all duration-300"
+            className=" flex items-center gap-2 cursor-pointer font-bold text-gray-200 px-3 py-2 rounded-lg hover:text-white hover:shadow-[0_0_5px_#7c3aed,0_0_10px_#7c3aed] transition-all duration-300"
           >
+            <LogOut/>
             Exit App
           </a>
         </nav>

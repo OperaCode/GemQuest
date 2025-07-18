@@ -1,10 +1,36 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect,useContext } from "react";
 import { Users, CheckCircle } from "lucide-react";
 import { GroupsContext } from "../context/GroupContext";
+import { getUpcomingTasks } from "../utility/TaskReminder";
 
 const GroupDashboard = () => {
   const { groups, toggleTaskStatus } = useContext(GroupsContext);
   const [filter, setFilter] = useState("All");
+
+
+//  to check forndue tasks
+  useEffect(() => {
+    const checkReminders = () => {
+      const upcoming = getUpcomingTasks(groups, 24); // check within 24 hours
+
+      upcoming.forEach(task => {
+        toast.info(
+          `Reminder: "${task.title}" in group "${task.groupName}" is due soon.`,
+          {
+            position: "top-right",
+            autoClose: 8000,
+          }
+        );
+      });
+    };
+
+    checkReminders(); 
+
+    const interval = setInterval(checkReminders, 60 * 60 * 1000); // Recheck every hour
+
+    return () => clearInterval(interval);
+  }, [groups]);
+
 
   const getFilteredTasks = () => {
     let tasks = [];
@@ -12,7 +38,7 @@ const GroupDashboard = () => {
       group.tasks.forEach((task) => {
         tasks.push({
           ...task,
-          groupId: group.id, // ✅ store groupId for toggling
+          groupId: group.id, 
           groupName: group.name,
         });
       });
