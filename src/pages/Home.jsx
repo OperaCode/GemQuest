@@ -1,48 +1,68 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../config/firebaseConfig";
-import { signOut } from "firebase/auth";
-import GroupDashboard from "../components/GroupDashboard";
+import React,{useState, useEffect} from "react";
+import { Users } from "lucide-react";
 import CreateTaskForm from "../components/CreateTaskForm";
+import GroupDashboard from "../components/GroupDashboard";
+import GroupCreation from "../components/GroupCreation";
 
 const Home = () => {
-  const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+    const [groups, setGroups] = useState([]);
 
+  // Load groups on mount
   useEffect(() => {
-    // Check if user is authenticated
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (!currentUser) {
-        navigate("/login");
-      } else {
-        setUser(currentUser);
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
+    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
+    setGroups(storedGroups);
+  }, []);
 
-  const handleLogout = async () => {
-    await signOut(auth);
-    navigate("/login");
+  // Refresh groups when group is created
+  const handleGroupCreated = () => {
+    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
+    setGroups(storedGroups);
   };
-
-  if (!user) return null; // or loading spinner later
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-200 p-4">
-      <header className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-purple-800">
-          👋 Welcome, {user.displayName}
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 to-amber-800">
+      {/* Header with Navigation */}
+      <header className="fixed top-0 left-0 w-full flex justify-between items-center p-4 bg-gray-900/10 backdrop-blur-md shadow-lg z-20 animate-[headerPulse_1.5s_ease-in-out]">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-purple-300">
+          TaskTribe
         </h1>
-        <button
-          onClick={handleLogout}
-          className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
-        >
-          Logout
-        </button>
+        <nav className="flex flex-wrap gap-2 sm:gap-4">
+          {["Home", "Tasks", "Profile", "Community"].map((item, index) => (
+            <a
+              key={index}
+              href={`/${item.toLowerCase()}`}
+              className="text-gray-200 px-3 py-2 rounded-lg hover:text-white hover:shadow-[0_0_5px_#7c3aed,0_0_10px_#7c3aed] transition-all duration-300"
+            >
+              {item}
+            </a>
+          ))}
+        </nav>
       </header>
-    <CreateTaskForm/>
-      <GroupDashboard user={user} />
+
+      {/* Welcome Banner */}
+      <section className="max-w-7xl mx-auto pt-20 sm:pt-24 px-4 sm:px-6">
+        <div className="relative bg-gray-800/50 backdrop-blur-md p-6 rounded-xl shadow-[0_0_10px_#7c3aed] animate-[slideIn_1s_ease-out]">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-2">
+            <Users size={28} /> Welcome to TaskTribe
+          </h2>
+          <p className="text-gray-200 mt-2">
+            Create your personal groups and keep track of your tasks seamlessly.
+          </p>
+          <div className="absolute inset-0 border-2 border-purple-400/30 rounded-xl animate-[pulse_3s_infinite]"></div>
+        </div>
+      </section>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto mt-6 px-4 sm:px-6 flex flex-col md:flex-row gap-6">
+        <div className="md:w-full">
+          <GroupCreation onGroupCreated={handleGroupCreated} />
+        </div>
+        <div className="md:w-1/2">
+          <CreateTaskForm groups={groups}/>
+        </div>
+        <div className="md:w-1/2">
+          <GroupDashboard groups={groups}/>
+        </div>
+      </main>
     </div>
   );
 };
