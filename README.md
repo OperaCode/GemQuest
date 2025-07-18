@@ -1,12 +1,24 @@
-# React + Vite
+📝 TaskTribe
+Collaborate. Conquer. Thrive Together.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+TaskTribe is a collaborative task management platform that empowers communities, teams, and friends to organize tasks, achieve goals, and celebrate wins as a tribe.
 
-Currently, two official plugins are available:
+🚀 Features
+🏷️ Group Creation: Create task groups for teams or personal projects.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✅ Task Management: Add, edit, and track tasks with deadlines.
 
-## Expanding the ESLint configuration
+👥 Participants: Assign participants to groups for seamless collaboration.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+📅 Reminders: Get notified when tasks are nearing their due dates.
+
+🎨 Beautiful UI: Responsive and animated interface built with React, Tailwind CSS, and Framer Motion.
+
+🛠 Tech Stack
+Frontend: React.js, Tailwind CSS, Framer Motion
+
+State Management: React Context API
+
+Icons: Lucide React
+
+Deployment: Vercel
