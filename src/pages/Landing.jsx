@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Users, CheckCircle, Trophy, House, SquareArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Landing = () => {
   const fadeInUp = {
@@ -71,8 +72,8 @@ const Landing = () => {
           </div>
         </motion.div>
 
-        <motion.a
-          href="/home"
+        <Link
+          to="/home"
           variants={fadeInUp}
           initial="hidden"
           animate="visible"
@@ -81,7 +82,7 @@ const Landing = () => {
           <button className="cursor-pointer bg-purple-600 text-white px-6 sm:px-8 py-3 rounded-full hover:bg-purple-700 hover:shadow-[0_0_5px_#7c3aed] transition-all duration-300 text-lg font-semibold">
             Get Started
           </button>
-        </motion.a>
+        </Link>
       </section>
 
       {/* Features Section */}

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { GroupsContext } from "../context/GroupContext";
+import { Link } from "react-router-dom";
 
 const GroupCreation = () => {
   const { groups, addGroup } = useContext(GroupsContext);
@@ -57,7 +58,7 @@ const GroupCreation = () => {
             <button
               type="button"
               onClick={handleAddParticipant}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-all duration-300"
+              className=" cursor-pointer bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-all duration-300"
             >
               Add
             </button>

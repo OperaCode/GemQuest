@@ -91,7 +91,7 @@ const CreateTaskForm = () => {
 
         <button
           type="submit"
-          className="w-full bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 hover:animate-pulse transition-all duration-300"
+          className="w-full cursor-pointer bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 hover:animate-pulse transition-all duration-300"
         >
           Add Task
         </button>
