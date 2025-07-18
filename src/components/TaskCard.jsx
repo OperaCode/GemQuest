@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../config/firebaseConfig";
-import {
-  doc,
-  updateDoc,
-  arrayUnion,
-  increment,
-  collection,
-  getDocs,
-} from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "react-toastify";
 
 const TaskCard = ({ task, user }) => {
   const [userProfiles, setUserProfiles] = useState([]);
@@ -41,12 +33,12 @@ const TaskCard = ({ task, user }) => {
 
   const handleComplete = async () => {
     if (!isParticipant) {
-      alert("You are not part of this task.");
+      toast.error("You are not part of this task.");
       return;
     }
 
     if (hasCompleted) {
-      alert("You have already completed this task.");
+      toast.info("You have already completed this task.");
       return;
     }
 
@@ -140,7 +132,7 @@ const TaskCard = ({ task, user }) => {
           className="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition mt-2"
           onClick={handleComplete}
           >
-            ✅ Mark as Done & Drop Gem
+            ✅ Mark as Done 
           </button>
         )}
       </div>

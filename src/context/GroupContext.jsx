@@ -14,7 +14,7 @@ export const GroupsProvider = ({ children }) => {
         const parsed = JSON.parse(stored);
         if (Array.isArray(parsed)) {
           setGroups(parsed);
-          console.log("Loaded groups from storage:", parsed);
+        //   console.log("Loaded groups from storage:", parsed);
         }
       } catch (err) {
         console.error("Failed to parse groups from storage", err);
@@ -27,7 +27,7 @@ export const GroupsProvider = ({ children }) => {
   useEffect(() => {
     if (loaded) {
       localStorage.setItem("tasktribe_groups", JSON.stringify(groups));
-      console.log("Saved groups to storage:", groups);
+    //   console.log("Saved groups to storage:", groups);
     }
   }, [groups, loaded]);
 
