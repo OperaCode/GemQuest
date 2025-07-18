@@ -1,21 +1,23 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Users } from "lucide-react";
 import CreateTaskForm from "../components/CreateTaskForm";
 import GroupDashboard from "../components/GroupDashboard";
 import GroupCreation from "../components/GroupCreation";
 
 const Home = () => {
-    const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState([]);
 
   // Load groups on mount
   useEffect(() => {
-    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
+    const storedGroups =
+      JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
     setGroups(storedGroups);
   }, []);
 
   // Refresh groups when group is created
   const handleGroupCreated = () => {
-    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
+    const storedGroups =
+      JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
     setGroups(storedGroups);
   };
   return (
@@ -26,15 +28,12 @@ const Home = () => {
           TaskTribe
         </h1>
         <nav className="flex flex-wrap gap-2 sm:gap-4">
-          {["Home", "Tasks", "Profile", "Community"].map((item, index) => (
-            <a
-              key={index}
-              href={`/${item.toLowerCase()}`}
-              className="text-gray-200 px-3 py-2 rounded-lg hover:text-white hover:shadow-[0_0_5px_#7c3aed,0_0_10px_#7c3aed] transition-all duration-300"
-            >
-              {item}
-            </a>
-          ))}
+          <a
+            href="/"
+            className=" cursor-pointer font-bold text-gray-200 px-3 py-2 rounded-lg hover:text-white hover:shadow-[0_0_5px_#7c3aed,0_0_10px_#7c3aed] transition-all duration-300"
+          >
+            Exit App
+          </a>
         </nav>
       </header>
 
@@ -57,10 +56,10 @@ const Home = () => {
           <GroupCreation onGroupCreated={handleGroupCreated} />
         </div>
         <div className="md:w-1/2">
-          <CreateTaskForm groups={groups}/>
+          <CreateTaskForm groups={groups} />
         </div>
         <div className="md:w-1/2">
-          <GroupDashboard groups={groups}/>
+          <GroupDashboard groups={groups} />
         </div>
       </main>
     </div>

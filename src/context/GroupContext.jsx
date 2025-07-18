@@ -4,17 +4,23 @@ export const GroupsContext = createContext();
 
 export const GroupsProvider = ({ children }) => {
   const [groups, setGroups] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   // Load groups from localStorage on mount
   useEffect(() => {
-    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups")) || [];
-    setGroups(storedGroups);
+    const storedGroups = JSON.parse(localStorage.getItem("tasktribe_groups"));
+    if (storedGroups) {
+      setGroups(storedGroups);
+    }
+    setIsLoaded(true); // Mark as loaded
   }, []);
 
-  // Save groups to localStorage when updated
+  // Save groups to localStorage only after initial load
   useEffect(() => {
-    localStorage.setItem("tasktribe_groups", JSON.stringify(groups));
-  }, [groups]);
+    if (isLoaded) {
+      localStorage.setItem("tasktribe_groups", JSON.stringify(groups));
+    }
+  }, [groups, isLoaded]);
 
   const addGroup = (groupName) => {
     const newGroup = {
@@ -23,26 +29,20 @@ export const GroupsProvider = ({ children }) => {
       tasks: [],
       createdAt: new Date().toISOString(),
     };
-    setGroups([...groups, newGroup]);
+    setGroups((prevGroups) => [...prevGroups, newGroup]);
   };
 
   const addTaskToGroup = (groupId, task) => {
     const updatedGroups = groups.map((group) =>
-      group.id === groupId
+      group.id === parseInt(groupId)
         ? { ...group, tasks: [...group.tasks, task] }
         : group
     );
     setGroups(updatedGroups);
   };
 
-  const value = {
-    groups,
-    addGroup,
-    addTaskToGroup,
-  };
-
   return (
-    <GroupsContext.Provider value={value}>
+    <GroupsContext.Provider value={{ groups, addGroup, addTaskToGroup }}>
       {children}
     </GroupsContext.Provider>
   );
