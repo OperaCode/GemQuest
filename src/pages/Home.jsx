@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../firebase/config";
+import { auth } from "../config/firebaseConfig";
 import { signOut } from "firebase/auth";
-// import GroupDashboard from "../components/GroupDashboard";
+import GroupDashboard from "../components/GroupDashboard";
+import CreateTaskForm from "../components/CreateTaskForm";
 
 const Home = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // Check if user is authenticated
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
+      if (!currentUser) {
         navigate("/login");
+      } else {
+        setUser(currentUser);
       }
     });
-
     return () => unsubscribe();
   }, [navigate]);
 
@@ -25,13 +26,13 @@ const Home = () => {
     navigate("/login");
   };
 
-  if (!user) return null;
+  if (!user) return null; // or loading spinner later
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-100 to-purple-200 p-4">
       <header className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold text-purple-800">
-          👋 Welcome, {user.displayName || user.email}
+          👋 Welcome, {user.displayName}
         </h1>
         <button
           onClick={handleLogout}
@@ -40,7 +41,7 @@ const Home = () => {
           Logout
         </button>
       </header>
-
+    <CreateTaskForm/>
       <GroupDashboard user={user} />
     </div>
   );

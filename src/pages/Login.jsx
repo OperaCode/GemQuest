@@ -1,64 +1,44 @@
-import React, { useState } from "react";
-import { auth } from "../firebase/config";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../config/firebaseConfig";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError("");
+  useEffect(() => {
+    // Check if user is already logged in
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      if (currentUser) navigate("/home");
+    });
+    return () => unsubscribe();
+  }, [navigate]);
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithPopup(auth, provider);
       navigate("/home");
-    } catch (err) {
-      setError(err.message);
+    } catch (error) {
+      console.error("Google Sign-In Error:", error);
+      alert("Login failed. Please try again.");
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-purple-100 to-pink-200 p-6">
-      <h1 className="text-3xl font-bold mb-4 text-purple-800">Login to GemQuest</h1>
-
-      <form
-        onSubmit={handleLogin}
-        className="bg-white rounded-lg shadow p-6 w-full max-w-sm"
+      <h1 className="text-3xl font-bold mb-6 text-purple-800">Login to GemQuest</h1>
+      <button
+        onClick={handleGoogleLogin}
+        className="bg-white text-purple-700 border border-purple-700 px-6 py-3 rounded-full flex items-center gap-2 hover:bg-purple-700 hover:text-white transition"
       >
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Email</label>
-          <input
-            type="email"
-            className="w-full border px-3 py-2 rounded"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-
-        <div className="mb-6">
-          <label className="block text-gray-700 mb-2">Password</label>
-          <input
-            type="password"
-            className="w-full border px-3 py-2 rounded"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-
-        {error && <p className="text-red-500 mb-4">{error}</p>}
-
-        <button
-          type="submit"
-          className="bg-purple-600 text-white w-full py-2 rounded hover:bg-purple-700 transition"
-        >
-          Login
-        </button>
-      </form>
+        <img
+          src="https://www.svgrepo.com/show/355037/google.svg"
+          alt="Google"
+          className="w-5 h-5"
+        />
+        Sign in with Google
+      </button>
     </div>
   );
 };
