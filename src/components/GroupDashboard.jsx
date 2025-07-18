@@ -1,9 +1,9 @@
 import React, { useState, useContext } from "react";
-import { Users } from "lucide-react";
-import { GroupsContext } from "../context/GroupContext"; 
+import { Users, CheckCircle } from "lucide-react";
+import { GroupsContext } from "../context/GroupContext";
 
 const GroupDashboard = () => {
-  const { groups } = useContext(GroupsContext);
+  const { groups, toggleTaskStatus } = useContext(GroupsContext);
   const [filter, setFilter] = useState("All");
 
   const getFilteredTasks = () => {
@@ -12,6 +12,7 @@ const GroupDashboard = () => {
       group.tasks.forEach((task) => {
         tasks.push({
           ...task,
+          groupId: group.id, // ✅ store groupId for toggling
           groupName: group.name,
         });
       });
@@ -30,6 +31,8 @@ const GroupDashboard = () => {
       <h2 className="text-xl sm:text-2xl font-bold text-white mb-4 flex items-center gap-2">
         <Users size={24} /> Group Tasks
       </h2>
+
+      {/* Filter buttons */}
       <div className="flex gap-2 mb-4">
         {["All", "Pending", "Completed"].map((status) => (
           <button
@@ -58,9 +61,21 @@ const GroupDashboard = () => {
             >
               <h3 className="text-lg font-bold text-purple-400">{task.title}</h3>
               <p className="text-gray-300 text-sm mb-1">Group: {task.groupName}</p>
-              <p className="text-gray-300 text-sm">
-                Status: {task.completed ? "Completed" : "Pending"}
+              <p className="text-gray-300 text-sm mb-2">
+                Status: {task.completed ? "Completed ✅" : "Pending ⏳"}
               </p>
+              
+              {/* Toggle status button */}
+              <button
+                onClick={() => toggleTaskStatus(task.groupId, task.id)}
+                className={`mt-2 w-full px-4 py-2 rounded-lg text-sm font-semibold ${
+                  task.completed
+                    ? "bg-green-600 hover:bg-green-700"
+                    : "bg-yellow-500 hover:bg-yellow-600"
+                } transition-all duration-300`}
+              >
+                Mark as {task.completed ? "Pending" : "Completed"}
+              </button>
             </div>
           ))}
         </div>

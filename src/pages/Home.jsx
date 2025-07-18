@@ -58,10 +58,13 @@ const Home = () => {
         <div className="md:w-1/2">
           <CreateTaskForm groups={groups} />
         </div>
-        <div className="md:w-1/2">
+       
+      </main>
+      <section className="max-w-7xl mx-auto mt-6 px-4 sm:px-6 pb-8">
+         <div className="w-full">
           <GroupDashboard groups={groups} />
         </div>
-      </main>
+      </section>
     </div>
   );
 };
